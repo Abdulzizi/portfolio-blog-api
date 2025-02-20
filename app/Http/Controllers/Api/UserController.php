@@ -57,7 +57,7 @@ class UserController extends Controller
     }
 
     /**
-     * Menampilkan user secara spesifik dari tabel m_user
+     * Menampilkan user secara spesifik dari tabel users
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      *
@@ -75,7 +75,7 @@ class UserController extends Controller
     }
 
     /**
-     * Membuat data user baru & disimpan ke tabel m_user
+     * Membuat data user baru & disimpan ke tabel users
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      */
@@ -89,7 +89,7 @@ class UserController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'm_user_roles_id']);
+        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
         $user = $this->userHelper->create($payload);
 
         if (! $user['status']) {
@@ -100,7 +100,7 @@ class UserController extends Controller
     }
 
     /**
-     * Mengubah data user di tabel m_user
+     * Mengubah data user di tabel users
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      */
@@ -114,7 +114,7 @@ class UserController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'm_user_roles_id']);
+        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
         $user = $this->userHelper->update($payload, $id ?? 0);
 
         if (! $user['status']) {

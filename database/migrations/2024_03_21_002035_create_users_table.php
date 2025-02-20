@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('m_user', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('m_user_roles_id')->comment('Fill with id from table m_user_roles');
+            $table->uuid('user_roles_id')->comment('Fill with id from table users_roles');
             $table->string('name', 100)
                 ->comment('Fill with name of user');
             $table->string('email', 50)
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->integer('updated_by')->default(0);
             $table->integer('deleted_by')->default(0);
 
-            $table->index('m_user_roles_id');
+            $table->index('user_roles_id');
             $table->index('email');
             $table->index('name');
             $table->index('updated_security');
@@ -52,6 +52,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_user');
+        Schema::dropIfExists('users');
     }
 };

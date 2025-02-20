@@ -9,7 +9,7 @@ use Throwable;
 
 /**
  * Helper untuk manajemen user
- * Mengambil data, menambah, mengubah, & menghapus ke tabel m_user
+ * Mengambil data, menambah, mengubah, & menghapus ke tabel users
  *
  * @author Wahyu Agung <wahyuagung26@gmail.com>
  */
@@ -25,7 +25,7 @@ class UserHelper extends Venturo
     }
 
     /**
-     * method untuk menginput data baru ke tabel m_user
+     * method untuk menginput data baru ke tabel users
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      *
@@ -59,7 +59,7 @@ class UserHelper extends Venturo
      * yaitu mengisi kolom deleted_at agar data tsb tidak
      * keselect waktu menggunakan Query
      *
-     * @param  int  $id  id dari tabel m_user
+     * @param  int  $id  id dari tabel users
      */
     public function delete(string $id): bool
     {
@@ -73,7 +73,7 @@ class UserHelper extends Venturo
     }
 
     /**
-     * Mengambil data user dari tabel m_user
+     * Mengambil data user dari tabel users
      *
      * @author Wahyu Agung <wahyuagung26@gmail.com>
      *
@@ -95,9 +95,9 @@ class UserHelper extends Venturo
     }
 
     /**
-     * Mengambil 1 data user dari tabel m_user
+     * Mengambil 1 data user dari tabel users
      *
-     * @param  int  $id  id dari tabel m_user
+     * @param  int  $id  id dari tabel users
      */
     public function getById(string $id): array
     {
@@ -116,7 +116,7 @@ class UserHelper extends Venturo
     }
 
     /**
-     * method untuk mengubah user pada tabel m_user
+     * method untuk mengubah user pada tabel users
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      *
@@ -164,7 +164,7 @@ class UserHelper extends Venturo
          * Jika dalam payload terdapat base64 foto, maka Upload foto ke folder public/uploads/foto-user
          */
         if (! empty($payload['photo'])) {
-            $fileName = $this->generateFileName($payload['photo'], 'USER_'.date('Ymdhis'));
+            $fileName = $this->generateFileName($payload['photo'], 'USER_' . date('Ymdhis'));
             $photo = $payload['photo']->storeAs(self::USER_PHOTO_DIRECTORY, $fileName, 'public');
             $payload['photo'] = $photo;
         } else {

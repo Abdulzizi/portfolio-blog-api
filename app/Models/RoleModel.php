@@ -21,7 +21,7 @@ class RoleModel extends Model implements CrudInterface
         'access',
     ];
 
-    protected $table = 'm_user_roles';
+    protected $table = 'user_roles';
 
     public function drop(string $id)
     {
@@ -39,7 +39,7 @@ class RoleModel extends Model implements CrudInterface
         $role = $this->query();
 
         if (! empty($filter['name'])) {
-            $role->where('name', 'LIKE', '%'.$filter['name'].'%');
+            $role->where('name', 'LIKE', '%' . $filter['name'] . '%');
         }
 
         $total = $role->count();

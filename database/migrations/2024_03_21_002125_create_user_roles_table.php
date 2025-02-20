@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('m_user_roles', function (Blueprint $table) {
+        Schema::create('user_roles', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->char('name', 50);
             $table->text('access');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_user_roles');
+        Schema::dropIfExists('user_roles');
     }
 };
