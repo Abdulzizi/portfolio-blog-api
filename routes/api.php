@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\UserController;
@@ -35,6 +36,13 @@ Route::prefix('v1')->group(function () {
     Route::post('/roles', [RoleController::class, 'store']); //->middleware(['auth.api', 'role:roles.create']);
     Route::put('/roles', [RoleController::class, 'update']); //->middleware(['auth.api', 'role:roles.update']);
     Route::delete('/roles/{id}', [RoleController::class, 'destroy']); //->middleware(['auth.api', 'role:roles.delete']);
+
+
+    Route::get('/posts', [PostController::class, 'index']); //->middleware(['auth.api', 'role:posts.view']);
+    Route::get('/posts/{id}', [PostController::class, 'show']); //->middleware(['auth.api', 'role:posts.view']);
+    Route::post('/posts', [PostController::class, 'store']); //->middleware(['auth.api', 'role:posts.create']);
+    Route::put('/posts/{id}', [PostController::class, 'update']); //->middleware(['auth.api', 'role:posts.update']);
+    Route::delete('/posts/{id}', [PostController::class, 'destroy']); //->middleware(['auth.api', 'role:posts.delete']);
 });
 
 Route::get('/', function () {
