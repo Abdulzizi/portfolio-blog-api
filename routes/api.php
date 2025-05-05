@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogPostController;
 use App\Http\Controllers\Api\SiteController;
+use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,12 @@ Route::prefix('v1')->group(function () {
     Route::post('/blog', [BlogPostController::class, 'store']);
     Route::put('/blog/{id}', [BlogPostController::class, 'update']);
     Route::delete('/blog/{id}', [BlogPostController::class, 'destroy']);
+
+    Route::get('/tags', [TagController::class, 'index']);
+    Route::get('/tags/{id}', [TagController::class, 'show']);
+    Route::post('/tags', [TagController::class, 'store']);
+    Route::put('/tags/{id}', [TagController::class, 'update']);
+    Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 });
 
 Route::get('/', function () {

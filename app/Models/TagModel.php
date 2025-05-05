@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\SlugHelper;
 use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,10 @@ class TagModel extends Model implements CrudInterface
 
     public function edit(array $payload, string $id)
     {
+        if (!empty($payload['name'])) {
+            $payload['slug'] = SlugHelper::createUniqueSlug($payload['name'], self::class);
+        }
+
         return $this->find($id)->update($payload);
     }
 
@@ -91,6 +96,8 @@ class TagModel extends Model implements CrudInterface
 
     public function store(array $payload)
     {
+        $payload['slug'] = SlugHelper::createUniqueSlug($payload['name'], self::class);
+
         return $this->create($payload);
     }
 }
