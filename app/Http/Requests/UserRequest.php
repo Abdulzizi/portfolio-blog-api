@@ -8,27 +8,19 @@ use ProtoneMedia\LaravelMixins\Request\ConvertsBase64ToFiles;
 
 class UserRequest extends FormRequest
 {
-    use ConvertsBase64ToFiles; // Library untuk convert base64 menjadi File
+    use ConvertsBase64ToFiles;
 
     public $validator;
 
-    /**
-     * Setting custom attribute pesan error yang ditampilkan
-     *
-     * @return array
-     */
     public function attributes()
     {
         return [
             'password' => 'Kolom Password',
+            'username' => 'Kolom Username',
+            'email' => 'Kolom Email',
         ];
     }
 
-    /**
-     * Tampilkan pesan error ketika validasi gagal
-     *
-     * @return void
-     */
     public function failedValidation(Validator $validator)
     {
         $this->validator = $validator;
@@ -46,23 +38,18 @@ class UserRequest extends FormRequest
     private function createRules(): array
     {
         return [
-            'name' => 'required|max:100',
-            'photo' => 'nullable|file|image',
-            'email' => 'required|email|unique:m_user',
+            'username' => 'required|max:100',
+            'email' => 'required|email|unique:users,email,' . $this->route('id'),
             'password' => 'required|min:6',
-            'phone_number' => 'numeric',
-            'm_user_roles_id' => 'required',
         ];
     }
 
     private function updateRules(): array
     {
         return [
-            'name' => 'required|max:100',
-            'photo' => 'nullable|file|image',
-            'email' => 'required|email|unique:m_user,email,'.$this->id,
-            'phone_number' => 'numeric',
-            'm_user_roles_id' => 'required',
+            'username' => 'sometimes|nullable|max:100',
+            'email' => 'sometimes|nullable|email|unique:users,email,' . $this->route('id'),
+            'password' => 'sometimes|nullable|min:6',
         ];
     }
 

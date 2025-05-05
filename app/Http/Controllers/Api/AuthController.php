@@ -9,19 +9,8 @@ use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
-    /**
-     * Method untuk handle proses login & generate token JWT
-     *
-     * @author Wahyu Agung <wahyuagung26@email.com>
-     *
-     * @return void
-     */
     public function login(AuthRequest $request)
     {
-        /**
-         * Menampilkan pesan error ketika validasi gagal
-         * pengaturan validasi bisa dilihat pada class app/Http/request/User/UpdateRequest
-         */
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors(), 422);
         }
@@ -36,21 +25,12 @@ class AuthController extends Controller
         return response()->success($login['data']);
     }
 
-    /**
-     * Mengambil profile user yang sedang login
-     *
-     * @return void
-     */
     public function profile()
     {
         return response()->success(new UserResource(auth()->user()));
     }
 
-    /**
-     * Mengambil profile user yang sedang login
-     *
-     * @return void
-     */
+
     public function logout()
     {
 
@@ -61,6 +41,5 @@ class AuthController extends Controller
         }
 
         return response()->success([], 'Logout Success !');
-
     }
 }

@@ -15,64 +15,22 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
     use SoftDeletes; // Use SoftDeletes library
     use Uuid; // Use SoftDeletes library
 
-    /**
-     * Akan mengisi kolom "created_at" dan "updated_at" secara otomatis,
-     *
-     * @var bool
-     */
     public $timestamps = true;
 
-    protected $attributes = [
-        'm_user_roles_id' => 1, // memberi nilai default = 1 pada kolom m_user_roles_id
-    ];
-
-    /**
-     * Menentukan kolom apa saja yang bisa dimanipulasi oleh UserModel
-     *
-     * @var array
-     */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
-        'photo',
-        'm_user_roles_id',
-        'phone_number',
     ];
 
-    /**
-     * Menentukan nama tabel yang terhubung dengan Class ini
-     *
-     * @var string
-     */
-    protected $table = 'm_user';
+    protected $table = 'users';
 
-    /**
-     * Relation to Role
-     *
-     * @return void
-     */
-    public function role()
-    {
-        return $this->hasOne(RoleModel::class, 'id', 'm_user_roles_id');
-    }
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    /**
-     * Payload yang disimpan pada token JWT, jangan tampilkan informasi
-     * yang bersifat rahasia pada payload ini untuk mengamankan akun pengguna
-     *
-     * @return array
-     */
     public function getJWTCustomClaims()
     {
         return [
@@ -84,28 +42,6 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
         ];
     }
 
-    /**
-     * Method untuk mengecek apakah user memiliki permission
-     *
-     * @param  string  $permissionName  contoh: user.create / user.update
-     * @return bool
-     */
-    public function isHasRole($permissionName)
-    {
-        $tokenPermission = explode('|', $permissionName);
-        $userPrivilege = json_decode($this->role->access ?? '{}', true);
-
-        foreach ($tokenPermission as $val) {
-            $permission = explode('.', $val);
-            $feature = $permission[0] ?? '-';
-            $activity = $permission[1] ?? '-';
-            if (isset($userPrivilege[$feature][$activity]) && $userPrivilege[$feature][$activity] === true) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public function drop(string $id)
     {
@@ -119,19 +55,37 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
 
     public function getAll(array $filter, int $page = 1, int $itemPerPage = 0, string $sort = '')
     {
+
         $skip = ($page * $itemPerPage) - $itemPerPage;
         $user = $this->query();
 
-        if (! empty($filter['name'])) {
-            $user->where('name', 'LIKE', '%'.$filter['name'].'%');
+        if (! empty($filter['username'])) {
+            $user->where('username', 'LIKE', '%' . $filter['username'] . '%');
         }
 
         if (! empty($filter['email'])) {
-            $user->where('email', 'LIKE', '%'.$filter['email'].'%');
+            $user->where('email', 'LIKE', '%' . $filter['email'] . '%');
         }
 
+        $allowedSorts = [
+            'username_asc' => 'username ASC',
+            'username_desc' => 'username DESC',
+            'email_asc' => 'email ASC',
+            'email_desc' => 'email DESC',
+        ];
+
+        $sortKey = str_replace(' ', '_', strtolower($sort));
+
+        if (isset($allowedSorts[$sortKey])) {
+            $user->orderByRaw($allowedSorts[$sortKey]);
+        } else {
+            $user->orderBy('id', 'asc');
+        }
+
+        // dd($sortKey);
+
         $total = $user->count();
-        $list = $user->skip($skip)->take($itemPerPage)->orderByRaw($sort)->get();
+        $list = $user->skip($skip)->take($itemPerPage)->get();
 
         return [
             'total' => $total,
