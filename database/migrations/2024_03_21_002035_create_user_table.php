@@ -27,7 +27,7 @@ return new class extends Migration
                 ->comment('Fill with timestamp when user update password / email')
                 ->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
 
             $table->index('email');
             $table->index('username');

@@ -6,11 +6,9 @@ use App\Helpers\SlugHelper;
 use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TagModel extends Model implements CrudInterface
 {
-    use SoftDeletes; // Use SoftDeletes library
     use Uuid;
 
     protected $fillable = [

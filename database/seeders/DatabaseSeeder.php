@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
 
             BlogPostSeeder::class,
             TagSeeder::class,
-            BlogTagSeeder::class
+            BlogTagSeeder::class,
+            ProjectSeeder::class
         ]);
     }
 }

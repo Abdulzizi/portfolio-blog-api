@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Helpers\Project;
+
+use App\Helpers\Venturo;
+use App\Models\ProjectModel;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Throwable;
+
+class ProjectHelper extends Venturo
+{
+    const IMAGE_DIRECTORY = 'project-images';
+
+    private $projectModel;
+
+    public function __construct()
+    {
+        $this->projectModel = new ProjectModel;
+    }
+
+    public function create(array $payload): array
+    {
+        try {
+            $payload = $this->uploadAndGetPayload($payload);
+
+            $project = $this->projectModel->store($payload);
+
+            return [
+                'status' => true,
+                'data' => $project,
+            ];
+        } catch (Throwable $th) {
+            return [
+                'status' => false,
+                'error' => $th->getMessage(),
+            ];
+        }
+    }
+
+    public function delete(string $id): bool
+    {
+        try {
+            $this->projectModel->drop($id);
+            return true;
+        } catch (Throwable $th) {
+            return false;
+        }
+    }
+
+    public function getAll(array $filter, int $page = 1, int $itemPerPage = 0, string $sort = '')
+    {
+        return $this->projectModel->getAll($filter, $page, $itemPerPage, $sort);
+    }
+
+    public function getById(string $id): array
+    {
+        $project = $this->projectModel->getById($id);
+
+        if (empty($project)) {
+            return [
+                'status' => false,
+                'data' => null,
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => $project,
+        ];
+    }
+
+    public function update(array $payload, string $id): array
+    {
+        try {
+            $payload = $this->uploadAndGetPayload($payload);
+
+            $project = $this->projectModel->findOrFail($id);
+            $project->edit($payload, $id);
+
+            return [
+                'status' => true,
+                'data' => $project->fresh(),
+            ];
+        } catch (Throwable $th) {
+            return [
+                'status' => false,
+                'error' => $th->getMessage(),
+            ];
+        }
+    }
+
+    private function uploadAndGetPayload(array $payload): array
+    {
+        // Upload thumbnail if exists
+        if (!empty($payload['thumbnail'])) {
+            $thumbnail = $payload['thumbnail'];
+            $uploadedThumb = Cloudinary::upload($thumbnail->getRealPath())->getSecurePath();
+            $payload['thumbnail'] = $uploadedThumb;
+        }
+
+        // Upload images array if exists
+        if (!empty($payload['images']) && is_array($payload['images'])) {
+            $uploadedImages = [];
+
+            foreach ($payload['images'] as $image) {
+                $uploadedImages[] = Cloudinary::upload($image->getRealPath())->getSecurePath();
+            }
+
+            // Store as JSON string
+            $payload['images'] = json_encode($uploadedImages);
+        } elseif (empty($payload['images'])) {
+            unset($payload['images']);
+        }
+
+        return $payload;
+    }
+}

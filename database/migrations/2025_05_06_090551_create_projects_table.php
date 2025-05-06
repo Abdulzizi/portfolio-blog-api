@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blog_posts', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('title', 255);
-            $table->text('content');
-            $table->string('cover_image')->nullable();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->string('link')->nullable(); // GitHub/Demo
+            $table->json('tech_stack')->nullable(); // Array of tech used
+            $table->string('images')->nullable(); // image in project
+            $table->string('thumbnail')->nullable(); // thumbnail image
             $table->string('slug')->unique();
             $table->boolean('is_published')->default(false);
 
-            // $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blog_posts');
+        Schema::dropIfExists('projects');
     }
 };

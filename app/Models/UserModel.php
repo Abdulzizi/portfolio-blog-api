@@ -5,14 +5,12 @@ namespace App\Models;
 use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class UserModel extends Authenticatable implements CrudInterface, JWTSubject
 {
     use HasFactory;
-    use SoftDeletes; // Use SoftDeletes library
     use Uuid; // Use SoftDeletes library
 
     public $timestamps = true;

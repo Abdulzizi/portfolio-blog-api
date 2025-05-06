@@ -51,9 +51,9 @@ class TagHelper extends Venturo
 
     public function getById(string $id): array
     {
-        $blog = $this->tagModel->getById($id);
+        $tag = $this->tagModel->getById($id);
 
-        if (empty($blog)) {
+        if (empty($tag)) {
             return [
                 'status' => false,
                 'data' => null,
@@ -62,19 +62,19 @@ class TagHelper extends Venturo
 
         return [
             'status' => true,
-            'data' => $blog,
+            'data' => $tag,
         ];
     }
 
     public function update(array $payload, string $id): array
     {
         try {
-            $blog = $this->tagModel->findOrFail($id);
-            $blog->edit($payload, $id);
+            $tag = $this->tagModel->findOrFail($id);
+            $tag->edit($payload, $id);
 
             return [
                 'status' => true,
-                'data' => $blog->fresh('tags'),
+                'data' => $tag->fresh(),
             ];
         } catch (Throwable $th) {
             return [

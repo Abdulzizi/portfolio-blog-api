@@ -7,24 +7,22 @@ use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class BlogPostModel extends Model implements CrudInterface
+class ProjectModel extends Model implements CrudInterface
 {
     use Uuid;
 
     protected $fillable = [
         'title',
-        'content',
-        'cover_image',
+        'description',
+        'link',
+        'tech_stack',
+        'images',
+        'thumbnail',
         'slug',
-        'is_published',
+        'is_published'
     ];
 
-    protected $table = 'blog_posts';
-
-    public function tags()
-    {
-        return $this->belongsToMany(TagModel::class, 'blog_tags', 'blog_post_id', 'tag_id');
-    }
+    protected $table = 'projects';
 
     public function drop(string $id)
     {
@@ -44,31 +42,16 @@ class BlogPostModel extends Model implements CrudInterface
     {
 
         $skip = ($page * $itemPerPage) - $itemPerPage;
-        $blogPost = $this->query();
+        $projects = $this->query();
 
         // Filter by title
         if (! empty($filter['title'])) {
-            $blogPost->where('title', 'LIKE', '%' . $filter['title'] . '%');
+            $projects->where('title', 'LIKE', '%' . $filter['title'] . '%');
         }
 
         // Filter by publication status
         if (isset($filter['is_published'])) {
-            $blogPost->where('is_published', $filter['is_published']);
-        }
-
-        // Filter by tags (using a relationship check)
-        if (! empty($filter['tags'])) {
-            $tags = is_array($filter['tags'])
-                ? $filter['tags']
-                : explode(',', $filter['tags']);
-
-            $blogPost->whereHas('tags', function ($query) use ($tags) {
-                // If you really want to filter by tag ID:
-                // $query->whereIn('tags.id', $tags);
-
-                // Or, if you intended to filter by slug:
-                $query->whereIn('tags.slug', $tags);
-            });
+            $projects->where('is_published', $filter['is_published']);
         }
 
         $allowedSorts = [
@@ -83,14 +66,14 @@ class BlogPostModel extends Model implements CrudInterface
         $sortKey = str_replace(' ', '_', strtolower($sort));
 
         if (isset($allowedSorts[$sortKey])) {
-            $blogPost->orderByRaw($allowedSorts[$sortKey]);
+            $projects->orderByRaw($allowedSorts[$sortKey]);
         } else {
-            $blogPost->orderBy('created_at', 'asc');
+            $projects->orderBy('created_at', 'asc');
         }
 
-        $total = $blogPost->count();
+        $total = $projects->count();
 
-        $list = $blogPost->skip($skip)->take($itemPerPage)->get();
+        $list = $projects->skip($skip)->take($itemPerPage)->get();
 
         return [
             'total' => $total,
