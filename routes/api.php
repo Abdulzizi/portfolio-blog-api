@@ -26,29 +26,31 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/profile', [AuthController::class, 'profile'])->middleware(['auth.api']);
 
-    Route::get('/users', [UserController::class, 'index']); //->middleware(['auth.api');
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::middleware(['auth.api'])->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/users/{id}', [UserController::class, 'show']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::put('/users/{id}', [UserController::class, 'update']);
+        Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-    Route::get('/blog', [BlogPostController::class, 'index']);
-    Route::get('/blog/{id}', [BlogPostController::class, 'show']);
-    Route::post('/blog', [BlogPostController::class, 'store']);
-    Route::put('/blog/{id}', [BlogPostController::class, 'update']);
-    Route::delete('/blog/{id}', [BlogPostController::class, 'destroy']);
+        Route::get('/blog', [BlogPostController::class, 'index']);
+        Route::get('/blog/{id}', [BlogPostController::class, 'show']);
+        Route::post('/blog', [BlogPostController::class, 'store']);
+        Route::put('/blog/{id}', [BlogPostController::class, 'update']);
+        Route::delete('/blog/{id}', [BlogPostController::class, 'destroy']);
 
-    Route::get('/tags', [TagController::class, 'index']);
-    Route::get('/tags/{id}', [TagController::class, 'show']);
-    Route::post('/tags', [TagController::class, 'store']);
-    Route::put('/tags/{id}', [TagController::class, 'update']);
-    Route::delete('/tags/{id}', [TagController::class, 'destroy']);
+        Route::get('/tags', [TagController::class, 'index']);
+        Route::get('/tags/{id}', [TagController::class, 'show']);
+        Route::post('/tags', [TagController::class, 'store']);
+        Route::put('/tags/{id}', [TagController::class, 'update']);
+        Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
-    Route::get('/projects', [ProjectController::class, 'index']);
-    Route::get('/projects/{id}', [ProjectController::class, 'show']);
-    Route::post('/projects', [ProjectController::class, 'store']);
-    Route::put('/projects/{id}', [ProjectController::class, 'update']);
-    Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
+        Route::get('/projects', [ProjectController::class, 'index']);
+        Route::get('/projects/{id}', [ProjectController::class, 'show']);
+        Route::post('/projects', [ProjectController::class, 'store']);
+        Route::put('/projects/{id}', [ProjectController::class, 'update']);
+        Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
+    });
 });
 
 Route::get('/', function () {

@@ -63,6 +63,10 @@ class ProjectController extends Controller
 
         $payload['thumbnail'] = $request->file('thumbnail') ?? null;
 
+        if (isset($payload['tech_stack']) && is_array($payload['tech_stack'])) {
+            $payload['tech_stack'] = json_encode($payload['tech_stack']);
+        }
+
         // Ensure images is passed as file[] if needed
         if ($request->hasFile('images')) {
             $payload['images'] = $request->file('images');
@@ -94,6 +98,10 @@ class ProjectController extends Controller
         ]);
 
         $payload['thumbnail'] = $request->file('thumbnail') ?? null;
+
+        if (isset($payload['tech_stack']) && is_array($payload['tech_stack'])) {
+            $payload['tech_stack'] = json_encode($payload['tech_stack']);
+        }
 
         if ($request->hasFile('images')) {
             $payload['images'] = $request->file('images');

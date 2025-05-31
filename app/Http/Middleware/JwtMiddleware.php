@@ -12,15 +12,6 @@ use PHPOpenSourceSaver\JWTAuth\Http\Middleware\BaseMiddleware;
 
 class JwtMiddleware extends BaseMiddleware
 {
-    /**
-     * Middleware untuk validasi token yang dikirim.
-     * Jika user melakukan perubahan email / password yang berhubungan dengan keamanan
-     * maka user tersebut harus login ulang.
-     *
-     * Pengecekannya menggunakan tgl data keamana diubah > tgl keamanan pada token yg disimpan di frontend
-     *
-     * @author Wahyu Agung <wahyuagung26@email.com>
-     */
     public function handle($request, Closure $next, $roles = '')
     {
         try {
@@ -34,25 +25,13 @@ class JwtMiddleware extends BaseMiddleware
             if ($updatedDb > $updatedToken) {
                 return response()->failed(['Terdapat perubahan pengaturan keamanan, silahkan login ulang'], 403);
             }
-
-            /**
-             * Middleware untuk mengecek permission user ketika melakukan request ke salah satu routes
-             * Pada saat membuat sebuah routes, tambahkan hak akses apa yang boleh mengakses endpoint ini
-             *
-             * Contohnya : Route::get('/users', [UserController::class, 'index'])->middleware(['auth.api','role:user_view']);
-             *
-             * Routes di atas hanya dapat diakses jika request dilengkapi dengan token JWT dan user memiliki akses "user_view"
-             */
-            if (! empty($roles) && ! $userModel->isHasRole($roles)) {
-                return response()->failed(['Anda tidak memiliki credential untuk mengakses data ini'], 403);
-            }
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException) {
                 return response()->failed(['Token yang anda gunakan tidak valid'], 403);
             } elseif ($e instanceof TokenExpiredException) {
                 return response()->failed(['Token anda telah kadaluarsa, silahkan login ulang'], 403);
             } else {
-                return response()->failed(['Silahkan login terlebih dahulu. '.$e->getMessage()], 403);
+                return response()->failed(['Silahkan login terlebih dahulu. ' . $e->getMessage()], 403);
             }
         }
 

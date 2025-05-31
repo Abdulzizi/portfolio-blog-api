@@ -3,25 +3,12 @@
 namespace App\Helpers\User;
 
 use App\Helpers\Venturo;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\UserResource;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
-/**
- * Helper khusus untuk authentifikasi pengguna
- *
- * @author Wahyu Agung <wahyuagung26@gmail.com>
- */
 class AuthHelper extends Venturo
 {
-    /**
-     * Proses validasi email dan password
-     * jika terdaftar pada database dilanjutkan generate token JWT
-     *
-     * @param  string  $email
-     * @param  string  $password
-     * @return void
-     */
     public static function login($email, $password)
     {
         try {
@@ -45,12 +32,6 @@ class AuthHelper extends Venturo
         ];
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string  $token
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected static function createNewToken($token)
     {
         return [
