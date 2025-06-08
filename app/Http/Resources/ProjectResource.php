@@ -24,6 +24,8 @@ class ProjectResource extends JsonResource
             'thumbnail' => $this->thumbnail ? Storage::url($this->thumbnail) : null,
             'images' => is_array($this->images) ? array_map(fn($img) => Storage::url($img), $this->images) : [],
             'tech_stack' => $this->tech_stack ?? [],
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
             'is_published' => $this->is_published,
         ];
     }

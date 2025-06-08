@@ -16,11 +16,13 @@ return new class extends Migration
 
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('link')->nullable(); // GitHub/Demo
-            $table->json('tech_stack')->nullable(); // Array of tech used
-            $table->string('images')->nullable(); // image in project
-            $table->string('thumbnail')->nullable(); // thumbnail image
+            $table->string('link')->nullable();
+            $table->json('tech_stack')->nullable();
+            $table->string('images')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('slug')->unique();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->boolean('is_published')->default(false);
 
             $table->timestamps();
