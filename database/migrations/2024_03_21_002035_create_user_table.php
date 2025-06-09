@@ -31,7 +31,6 @@ return new class extends Migration
 
             $table->index('email');
             $table->index('username');
-            $table->index('updated_security');
         });
     }
 
@@ -42,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
+        Schema::dropIfExists('users');
     }
 };
