@@ -69,6 +69,23 @@ class ProjectHelper extends Venturo
         ];
     }
 
+    public function getBySlug(string $slug): array
+    {
+        $project = $this->projectModel->where('slug', $slug)->first();
+        if (empty($project)) {
+            return [
+                'status' => false,
+                'data' => null
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => $project
+        ];
+    }
+
+
     public function update(array $payload, string $id): array
     {
         try {

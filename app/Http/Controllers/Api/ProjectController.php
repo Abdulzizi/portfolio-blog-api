@@ -45,6 +45,17 @@ class ProjectController extends Controller
         return response()->success(new ProjectResource($project['data']));
     }
 
+    public function showBySlug(string $slug)
+    {
+        $project = $this->projectHelper->getBySlug($slug);
+
+        if (!($project['status'])) {
+            return response()->failed(['Data project not found'], 404);
+        }
+
+        return response()->success(new ProjectResource($project['data']));
+    }
+
     public function store(ProjectRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {

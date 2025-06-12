@@ -26,6 +26,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/profile', [AuthController::class, 'profile'])->middleware(['auth.api']);
 
+    Route::get('/projects', [ProjectController::class, 'index']);
+    Route::get('/projects/{id}', [ProjectController::class, 'show']);
+    Route::get('/project/{slug}', [ProjectController::class, 'showBySlug']);
+
     Route::middleware(['auth.api'])->group(function () {
         Route::get('/users', [UserController::class, 'index']);
         Route::get('/users/{id}', [UserController::class, 'show']);
@@ -45,8 +49,6 @@ Route::prefix('v1')->group(function () {
         Route::put('/tags/{id}', [TagController::class, 'update']);
         Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
-        Route::get('/projects', [ProjectController::class, 'index']);
-        Route::get('/projects/{id}', [ProjectController::class, 'show']);
         Route::post('/projects', [ProjectController::class, 'store']);
         Route::put('/projects/{id}', [ProjectController::class, 'update']);
         Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
