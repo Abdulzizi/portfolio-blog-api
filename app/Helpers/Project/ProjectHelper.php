@@ -110,23 +110,11 @@ class ProjectHelper extends Venturo
     {
         // Upload thumbnail if exists
         if (!empty($payload['thumbnail'])) {
-            $thumbnail = $payload['thumbnail'];
-            $uploadedThumb = Cloudinary::upload($thumbnail->getRealPath())->getSecurePath();
-            $payload['thumbnail'] = $uploadedThumb;
-        }
+            $uploadedFileUrl = Cloudinary::upload($payload['thumbnail']->getRealPath())->getSecurePath();
 
-        // Upload images array if exists
-        if (!empty($payload['images']) && is_array($payload['images'])) {
-            $uploadedImages = [];
-
-            foreach ($payload['images'] as $image) {
-                $uploadedImages[] = Cloudinary::upload($image->getRealPath())->getSecurePath();
-            }
-
-            // Store as JSON string
-            $payload['images'] = json_encode($uploadedImages);
-        } elseif (empty($payload['images'])) {
-            unset($payload['images']);
+            $payload['thumbnail'] = $uploadedFileUrl;
+        } else {
+            unset($payload['thumbnail']);
         }
 
         return $payload;

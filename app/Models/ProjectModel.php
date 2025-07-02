@@ -17,6 +17,8 @@ class ProjectModel extends Model implements CrudInterface
         'link',
         'tech_stack',
         'images',
+        'start_date',
+        'end_date',
         'thumbnail',
         'slug',
         'is_published'

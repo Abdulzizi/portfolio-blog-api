@@ -69,6 +69,8 @@ class ProjectController extends Controller
             'tech_stack',
             'images',
             'thumbnail',
+            'start_date',
+            'end_date',
             'is_published',
         ]);
 
@@ -105,18 +107,17 @@ class ProjectController extends Controller
             'tech_stack',
             'images',
             'thumbnail',
+            'start_date',
+            'end_date',
             'is_published',
         ]);
 
-        $payload['thumbnail'] = $request->file('thumbnail') ?? null;
+        // $payload['thumbnail'] = $request->file('thumbnail') ?? $request->input('thumbnail');
+        // $payload['images'] = $request->array('images') ?? [];
 
-        if (isset($payload['tech_stack']) && is_array($payload['tech_stack'])) {
-            $payload['tech_stack'] = json_encode($payload['tech_stack']);
-        }
-
-        if ($request->hasFile('images')) {
-            $payload['images'] = $request->file('images');
-        }
+        // if (isset($payload['tech_stack']) && is_array($payload['tech_stack'])) {
+        //     $payload['tech_stack'] = json_encode($payload['tech_stack']);
+        // }
 
         $project = $this->projectHelper->update($payload, $id);
 

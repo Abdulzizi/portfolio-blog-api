@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             // BlogPostSeeder::class,
             TagSeeder::class,
             BlogTagSeeder::class,
-            // ProjectSeeder::class
+            ProjectSeeder::class
         ]);
     }
 }

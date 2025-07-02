@@ -21,6 +21,8 @@ class ProjectRequest extends FormRequest
             'thumbnail' => 'Thumbnail',
             'images' => 'Gambar Project',
             'tech_stack' => 'Teknologi Digunakan',
+            'start_date' => 'Tanggal Mulai',
+            'end_date' => 'Tanggal Selesai',
             'is_published' => 'Status Publikasi',
         ];
     }
@@ -45,12 +47,16 @@ class ProjectRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'link' => 'nullable|url|max:255',
-            'thumbnail' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*' => 'string',
             'tech_stack' => 'nullable|array',
             'tech_stack.*' => 'string|max:100',
             'is_published' => 'boolean',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+
+            'thumbnail' => 'nullable|sometimes|image|mimes:jpg,jpeg,png,gif|max:10240', // 10MB
+
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:10240',
         ];
     }
 
@@ -60,12 +66,13 @@ class ProjectRequest extends FormRequest
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'link' => 'nullable|url|max:255',
-            'thumbnail' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*' => 'string',
             'tech_stack' => 'nullable|array',
             'tech_stack.*' => 'string|max:100',
             'is_published' => 'nullable|boolean',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+
+            'thumbnail' => 'nullable|image|file',
         ];
     }
 
@@ -75,8 +82,7 @@ class ProjectRequest extends FormRequest
     protected function base64FileKeys(): array
     {
         return [
-            'thumbnail' => 'thumbnail.jpg',
-            'images.*' => 'image.jpg', // for multiple images in base64
+            'thumbnail' => 'nullable|file|image',
         ];
     }
 }
