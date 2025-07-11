@@ -112,12 +112,7 @@ class ProjectController extends Controller
             'is_published',
         ]);
 
-        // $payload['thumbnail'] = $request->file('thumbnail') ?? $request->input('thumbnail');
-        // $payload['images'] = $request->array('images') ?? [];
-
-        // if (isset($payload['tech_stack']) && is_array($payload['tech_stack'])) {
-        //     $payload['tech_stack'] = json_encode($payload['tech_stack']);
-        // }
+        $payload['thumbnail'] = $request->file('thumbnail') ?? $request->input('thumbnail');
 
         $project = $this->projectHelper->update($payload, $id);
 

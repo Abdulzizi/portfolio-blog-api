@@ -53,10 +53,7 @@ class ProjectRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
 
-            'thumbnail' => 'nullable|sometimes|image|mimes:jpg,jpeg,png,gif|max:10240', // 10MB
-
-            'images' => 'nullable|array|max:10',
-            'images.*' => 'image|mimes:jpg,jpeg,png,gif|max:10240',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
         ];
     }
 
@@ -72,7 +69,8 @@ class ProjectRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
 
-            'thumbnail' => 'nullable|image|file',
+            'thumbnail' => 'nullable',
+            // 'thumbnail' => 'nullable|sometimes|image|file',
         ];
     }
 
@@ -81,8 +79,6 @@ class ProjectRequest extends FormRequest
      */
     protected function base64FileKeys(): array
     {
-        return [
-            'thumbnail' => 'nullable|file|image',
-        ];
+        return ['thumbnail'];
     }
 }

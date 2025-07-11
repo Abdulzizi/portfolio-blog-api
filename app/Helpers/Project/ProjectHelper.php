@@ -108,17 +108,19 @@ class ProjectHelper extends Venturo
 
     private function uploadAndGetPayload(array $payload): array
     {
-        if (!empty($payload['thumbnail'])) {
+        if (!empty($payload['thumbnail']) && $payload['thumbnail'] instanceof \Illuminate\Http\UploadedFile) {
             $uploadedFile = Cloudinary::uploadApi()->upload($payload['thumbnail']->getRealPath(), [
                 'folder' => self::IMAGE_DIRECTORY,
             ]);
 
             $payload['thumbnail'] = $uploadedFile['secure_url'];
 
-            // TODO : Save public_id for deleting the image remotely (create public_id column in project table)
+            // Optional: save public_id
             // $payload['thumbnail_public_id'] = $uploadedFile['public_id'];
+        } elseif (is_string($payload['thumbnail'])) {
+            // Do nothing; it's already a URL (unchanged image)
         } else {
-            unset($payload['thumbnail']);
+            unset($payload['thumbnail']); // If null or invalid
         }
 
         return $payload;
